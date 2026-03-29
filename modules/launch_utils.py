@@ -348,8 +348,8 @@ def early_access_blackwell_wheels():
 
 
 def prepare_environment():
-    torch_index_url = os.environ.get('TORCH_INDEX_URL', "https://download.pytorch.org/whl/cu128")
-    torch_command = os.environ.get('TORCH_COMMAND', f"pip install torch==2.10.0 torchvision==0.25.0 --extra-index-url {torch_index_url}")
+    torch_index_url = os.environ.get('TORCH_INDEX_URL', "https://download.pytorch.org/whl/cu129")
+    torch_command = os.environ.get('TORCH_COMMAND', f"pip install torch==2.8.0 torchvision==0.23.0 --extra-index-url {torch_index_url}")
     if args.use_ipex:
         if platform.system() == "Windows":
             # The "Nuullll/intel-extension-for-pytorch" wheels were built from IPEX source for Intel Arc GPU: https://github.com/intel/intel-extension-for-pytorch/tree/xpu-main
@@ -373,7 +373,7 @@ def prepare_environment():
     requirements_file = os.environ.get('REQS_FILE', "requirements_versions.txt")
     requirements_file_for_npu = os.environ.get('REQS_FILE_FOR_NPU', "requirements_npu.txt")
 
-    xformers_package = os.environ.get('XFORMERS_PACKAGE', 'xformers==0.0.35')
+    xformers_package = os.environ.get('XFORMERS_PACKAGE', 'xformers==0.0.32 --index-url https://download.pytorch.org/whl/cu129')
     clip_package = os.environ.get('CLIP_PACKAGE', "https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip")
     openclip_package = os.environ.get('OPENCLIP_PACKAGE', "https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip")
 
@@ -447,7 +447,7 @@ def prepare_environment():
         startup_timer.record("install open_clip")
 
     if (not is_installed("xformers") or args.reinstall_xformers) and args.xformers:
-        run_pip(f"install -U -I --no-deps {xformers_package}", "xformers")
+        run_pip(f"install -I --no-deps {xformers_package}", "xformers")
         startup_timer.record("install xformers")
 
     if not is_installed("ngrok") and args.ngrok:
